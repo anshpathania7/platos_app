@@ -35,6 +35,7 @@ class ScreenOne extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           FloatingActionButton(
+            heroTag: '1',
             onPressed: () {
               context.read<CounterProvider>().incrementCount;
             },
@@ -43,6 +44,7 @@ class ScreenOne extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           FloatingActionButton(
+            heroTag: '2',
             onPressed: () {
               context.read<CounterProvider>().decrementCount;
             },

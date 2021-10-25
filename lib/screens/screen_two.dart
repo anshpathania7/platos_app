@@ -40,6 +40,7 @@ class ScreenTwo extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             FloatingActionButton(
+              heroTag: '3',
               onPressed: () {
                 context.read<CounterProvider>().incrementCount;
               },
@@ -48,6 +49,7 @@ class ScreenTwo extends StatelessWidget {
             ),
             const SizedBox(width: 12),
             FloatingActionButton(
+              heroTag: '4',
               onPressed: () {
                 context.read<CounterProvider>().decrementCount;
               },
