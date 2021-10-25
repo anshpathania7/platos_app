@@ -1,13 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart';
 import 'package:platos_app/repository/counter_repository.dart';
 
 class CounterProvider extends ChangeNotifier {
   int? _count;
+  Stream<String>? _countStream;
   bool _isLoading = true;
 
-  CounterProvider() {
-    _getIntialValueFromDB();
-  }
+  Stream<String> get getCountStream => _countStream!;
 
   set _setLoadingStateTo(bool v) {
     _isLoading = v;
@@ -16,17 +17,31 @@ class CounterProvider extends ChangeNotifier {
 
   bool get isLoadingData => _isLoading;
 
-  Future<void> _getIntialValueFromDB() async {
+  Future<void> _getIntialValueFromDB({required bool isPageOne}) async {
     _setLoadingStateTo = true;
-    final countInString = await CounterRepository().getCountFromDatabase();
-    _count = int.tryParse(countInString) ?? 0;
+    if (isPageOne) {
+      final countInString = await CounterRepository().getCountForPageOne();
+      _count = int.tryParse(countInString) ?? 0;
+      log(_count.toString());
+    } else {
+      _countStream = CounterRepository().getCountForPageTwo();
+    }
     _setLoadingStateTo = false;
     notifyListeners();
   }
 
+  Future<void> pushedPageOne() async {
+    await _getIntialValueFromDB(isPageOne: true);
+  }
+
+  Future<void> pushedPageTwo() async {
+    await _getIntialValueFromDB(isPageOne: false);
+  }
+
   void get incrementCount {
     _count = (_count ?? 0) + 1;
-    CounterRepository().updateCountInDatabase(value: _count!);
+    CounterRepository().updateCountInPageOne(value: _count!);
+    CounterRepository().updateCountInPageTwo(value: _count!);
     notifyListeners();
   }
 

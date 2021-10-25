@@ -21,12 +21,17 @@ class ScreenTwo extends StatelessWidget {
               'You have pushed the button this many times:',
             ),
             Consumer<CounterProvider>(
-              builder: (context, state, _) {
-                return Text(
-                  state.isLoadingData ? "Loading please wait" : state.getCount,
-                  style: Theme.of(context).textTheme.headline4,
-                );
-              },
+              builder: (context, state, _) => state.isLoadingData
+                  ? const CircularProgressIndicator()
+                  : StreamBuilder(
+                      stream: state.getCountStream,
+                      builder: (context, snap) {
+                        return Text(
+                          snap.data.toString(),
+                          style: Theme.of(context).textTheme.headline4,
+                        );
+                      },
+                    ),
             ),
           ],
         ),
