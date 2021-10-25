@@ -45,5 +45,13 @@ class CounterProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void get decrementCount {
+    if ((_count ?? 0) == 0) return;
+    _count = _count! - 1;
+    CounterRepository().updateCountInPageOne(value: _count!);
+    CounterRepository().updateCountInPageTwo(value: _count!);
+    notifyListeners();
+  }
+
   String get getCount => _count?.toString() ?? '0';
 }

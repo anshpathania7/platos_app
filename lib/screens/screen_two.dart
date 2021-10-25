@@ -10,37 +10,51 @@ class ScreenTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Screen Two"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+        appBar: AppBar(
+          title: const Text("Screen Two"),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text(
+                'You have pushed the button this many times:',
+              ),
+              Consumer<CounterProvider>(
+                builder: (context, state, _) => state.isLoadingData
+                    ? const CircularProgressIndicator()
+                    : StreamBuilder(
+                        stream: state.getCountStream,
+                        builder: (context, snap) {
+                          return Text(
+                            snap.data?.toString() ?? "0",
+                            style: Theme.of(context).textTheme.headline4,
+                          );
+                        },
+                      ),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButton: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                context.read<CounterProvider>().incrementCount;
+              },
+              tooltip: 'Increment',
+              child: const Icon(Icons.add),
             ),
-            Consumer<CounterProvider>(
-              builder: (context, state, _) => state.isLoadingData
-                  ? const CircularProgressIndicator()
-                  : StreamBuilder(
-                      stream: state.getCountStream,
-                      builder: (context, snap) {
-                        return Text(
-                          snap.data.toString(),
-                          style: Theme.of(context).textTheme.headline4,
-                        );
-                      },
-                    ),
+            const SizedBox(width: 12),
+            FloatingActionButton(
+              onPressed: () {
+                context.read<CounterProvider>().decrementCount;
+              },
+              tooltip: 'Decrement',
+              child: const Icon(Icons.remove),
             ),
           ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<CounterProvider>().incrementCount,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
-    );
+        ));
   }
 }
