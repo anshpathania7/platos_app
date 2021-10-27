@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:platos_app/providers/counter_provider.dart';
-import 'package:platos_app/screens/screen_one.dart';
-import 'package:platos_app/screens/screen_two.dart';
-import 'package:provider/provider.dart';
+import 'package:platos_app/screens/users/users_screen.dart';
+import 'package:platos_app/screens/weight/weight_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,29 +16,26 @@ class HomeScreen extends StatelessWidget {
             children: [
               OutlinedButton(
                 onPressed: () {
-                  context.read<CounterProvider>().pushedPageOne();
-
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ScreenOne(),
+                      builder: (context) => const WeightScreen(),
                     ),
                   );
                 },
-                child: const Text("Open screen 1"),
+                child: const Text("Weight Entries"),
               ),
               const SizedBox(height: 12),
               OutlinedButton(
                 onPressed: () {
-                  context.read<CounterProvider>().pushedPageTwo();
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const ScreenTwo(),
+                      builder: (context) => const UsersScreen(),
                     ),
                   );
                 },
-                child: const Text("Open screen 2"),
+                child: const Text("User entries"),
               ),
             ],
           ),
